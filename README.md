@@ -1,61 +1,55 @@
 # Laravel Pathao Courier Package
 
-A professional Laravel package for integrating with Pathao Courier Merchant API. This package provides a clean, well-structured interface for all Pathao API endpoints with built-in caching, rate limiting, and error handling.
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/nayemuf/pathao-courier.svg?style=flat-square)](https://packagist.org/packages/nayemuf/pathao-courier)
+[![Total Downloads](https://img.shields.io/packagist/dt/nayemuf/pathao-courier.svg?style=flat-square)](https://packagist.org/packages/nayemuf/pathao-courier)
+[![License](https://img.shields.io/packagist/l/nayemuf/pathao-courier.svg?style=flat-square)](https://packagist.org/packages/nayemuf/pathao-courier)
+[![Laravel](https://img.shields.io/badge/Laravel-10.x%20%7C%2011.x%20%7C%2012.x-orange.svg?style=flat-square)](https://laravel.com)
 
-## Features
+A professional Laravel package for integrating with **Pathao Courier Merchant API**. This package provides a clean, well-structured interface for all Pathao API endpoints with built-in caching, rate limiting, and comprehensive error handling.
 
-- ✅ **OAuth 2.0 Authentication** with automatic token caching
-- ✅ **Rate Limiting** to prevent API abuse
-- ✅ **Comprehensive API Coverage** - All Pathao endpoints
-- ✅ **Input Validation** before API calls
-- ✅ **Error Handling** with detailed exception messages
-- ✅ **Laravel Best Practices** - Service Provider, Facades, Config
-- ✅ **Sandbox & Production** support
-- ✅ **Type Safety** with proper type hints
+## ✨ Features
 
-## Installation
+- ✅ **Complete API Coverage** - All 11 Pathao Merchant API endpoints implemented
+- ✅ **OAuth 2.0 Authentication** - Automatic token management with intelligent caching
+- ✅ **Rate Limiting** - Built-in protection against API abuse (configurable)
+- ✅ **Input Validation** - Comprehensive validation before API calls
+- ✅ **Error Handling** - Detailed exception messages with field-level errors
+- ✅ **Laravel Best Practices** - Service Provider, Facades, and publishable config
+- ✅ **Sandbox & Production** - Full support for both environments
+- ✅ **Type Safety** - Complete type hints and PHPDoc documentation
+- ✅ **Zero Configuration** - Works out of the box with sensible defaults
 
-### For Local Development
+## 📋 Requirements
 
-1. The package is located in `packages/laravel-pathao-courier`
-2. It's already configured in your `composer.json` as a local repository
-3. Install it: `composer require laravel/pathao-courier:@dev`
+- PHP >= 8.2
+- Laravel >= 10.0
+- Guzzle HTTP Client >= 7.0
 
-### For Publishing (Future)
+## 📦 Installation
 
-Once published to Packagist:
+Install the package via Composer:
 
 ```bash
 composer require nayemuf/pathao-courier
 ```
 
-Then publish the config:
+The package will automatically register its service provider and facade.
 
-```bash
-php artisan vendor:publish --tag=pathao-config
-```
+## ⚙️ Configuration
 
-## Configuration
-
-### Step 1: Publish the Config File
+### Step 1: Publish Configuration
 
 Publish the configuration file to your `config` directory:
 
 ```bash
-php artisan vendor:publish --provider="Nayemuf\PathaoCourier\PathaoCourierServiceProvider" --tag=pathao-config
-```
-
-Or use the shorter command:
-
-```bash
 php artisan vendor:publish --tag=pathao-config
 ```
 
-This will copy `packages/nayemuf-pathao-courier/config/pathao.php` to `config/pathao.php` in your Laravel application.
+This will create `config/pathao.php` in your Laravel application.
 
-### Step 2: Configure Environment Variables
+### Step 2: Environment Variables
 
-Add to your `.env`:
+Add the following to your `.env` file:
 
 ```env
 PATHAO_SANDBOX=true
@@ -64,9 +58,15 @@ PATHAO_CLIENT_SECRET=your_client_secret
 PATHAO_USERNAME=your_email@example.com
 PATHAO_PASSWORD=your_password
 PATHAO_STORE_ID=your_store_id
+
+# Optional: Rate Limiting
+PATHAO_RATE_LIMIT_ENABLED=true
+PATHAO_RATE_LIMIT_PER_MINUTE=60
 ```
 
-### Sandbox Credentials (for testing)
+### 🧪 Sandbox Credentials (for Testing)
+
+Pathao provides sandbox credentials for testing:
 
 ```env
 PATHAO_SANDBOX=true
@@ -76,7 +76,7 @@ PATHAO_USERNAME=test@pathao.com
 PATHAO_PASSWORD=lovePathao
 ```
 
-### Test Store IDs (Sandbox)
+### 📍 Test Store IDs (Sandbox)
 
 You can use any of these store IDs for testing in the sandbox environment:
 
@@ -94,13 +94,12 @@ You can use any of these store IDs for testing in the sandbox environment:
 | `149039` | Partha Store |
 
 **Note:** To get the full list of available stores, use:
+
 ```php
 $stores = PathaoCourier::store()->list();
 ```
 
-Or visit: `http://your-domain.com/pathao-stores` (if you have the helper route configured)
-
-## Usage
+## 🚀 Usage
 
 ### Create an Order
 
@@ -108,20 +107,72 @@ Or visit: `http://your-domain.com/pathao-stores` (if you have the helper route c
 use Nayemuf\PathaoCourier\Facades\PathaoCourier;
 
 $orderData = [
-    'store_id' => 149043, // Use a test store ID from the list above
-    'merchant_order_id' => 'ORD-12345',
+    'store_id' => 149043, // Your store ID
+    'merchant_order_id' => 'ORD-12345', // Your internal order ID
     'recipient_name' => 'John Doe',
-    'recipient_phone' => '01712345678',
+    'recipient_phone' => '01712345678', // 11 digits, starts with 01
     'recipient_address' => 'House 123, Road 4, Sector 10, Uttara, Dhaka-1230',
     'delivery_type' => 48, // 48 for normal, 12 for on-demand
     'item_type' => 2, // 1 for document, 2 for parcel
     'item_quantity' => 1,
-    'item_weight' => '0.5',
-    'amount_to_collect' => 1000, // 0 for non-COD
-    'item_description' => 'Product description',
+    'item_weight' => '0.5', // in kg (0.5 to 10)
+    'amount_to_collect' => 1000, // 0 for non-COD orders
+    'item_description' => 'Product description', // Optional
 ];
 
-$response = PathaoCourier::order()->create($orderData);
+try {
+    $response = PathaoCourier::order()->create($orderData);
+    // Response contains: consignment_id, invoice_id, etc.
+} catch (\Nayemuf\PathaoCourier\Exceptions\PathaoException $e) {
+    // Handle error
+    logger()->error('Pathao order creation failed', [
+        'message' => $e->getMessage(),
+        'errors' => $e->getErrors(),
+    ]);
+}
+```
+
+### Create Bulk Orders
+
+```php
+$orders = [
+    [
+        'store_id' => 149043,
+        'merchant_order_id' => 'ORD-001',
+        'recipient_name' => 'John Doe',
+        'recipient_phone' => '01712345678',
+        'recipient_address' => 'Address 1',
+        'delivery_type' => 48,
+        'item_type' => 2,
+        'item_quantity' => 1,
+        'item_weight' => '0.5',
+        'amount_to_collect' => 1000,
+    ],
+    [
+        'store_id' => 149043,
+        'merchant_order_id' => 'ORD-002',
+        'recipient_name' => 'Jane Doe',
+        'recipient_phone' => '01712345679',
+        'recipient_address' => 'Address 2',
+        'delivery_type' => 48,
+        'item_type' => 2,
+        'item_quantity' => 1,
+        'item_weight' => '1.0',
+        'amount_to_collect' => 0,
+    ],
+];
+
+$response = PathaoCourier::order()->createBulk($orders);
+```
+
+### Get Order Information
+
+```php
+// Get order short info
+$orderInfo = PathaoCourier::order()->getInfo($consignmentId);
+
+// Get full order details
+$orderDetails = PathaoCourier::order()->getDetails($consignmentId);
 ```
 
 ### Get Cities, Zones, and Areas
@@ -137,38 +188,42 @@ $zones = PathaoCourier::area()->getZones($cityId);
 $areas = PathaoCourier::area()->getAreas($zoneId);
 ```
 
-### Calculate Price
+### Calculate Delivery Price
 
 ```php
 $priceData = [
-    'store_id' => 149043, // Use a test store ID from the list above
-    'item_type' => 2,
-    'delivery_type' => 48,
-    'item_weight' => 0.5,
-    'recipient_city' => 1,
-    'recipient_zone' => 298,
+    'store_id' => 149043,
+    'item_type' => 2, // 1 for document, 2 for parcel
+    'delivery_type' => 48, // 48 for normal, 12 for on-demand
+    'item_weight' => 0.5, // in kg
+    'recipient_city' => 1, // City ID
+    'recipient_zone' => 298, // Zone ID
 ];
 
 $price = PathaoCourier::price()->calculate($priceData);
+// Returns: price, distance, etc.
 ```
 
-### Get Store List
+### Store Management
 
 ```php
+// Get list of all stores
 $stores = PathaoCourier::store()->list();
-```
 
-### Get Store Info (Single Store)
-
-```php
+// Get single store info
 $storeInfo = PathaoCourier::store()->getInfo($storeId);
-```
 
-### Get Order Info
-
-```php
-$orderInfo = PathaoCourier::order()->getInfo($consignmentId);
-$orderDetails = PathaoCourier::order()->getDetails($consignmentId);
+// Create a new store
+$storeData = [
+    'name' => 'My Store',
+    'contact_name' => 'John Doe',
+    'contact_number' => '01712345678',
+    'address' => 'Store Address',
+    'city_id' => 1,
+    'zone_id' => 298,
+    'area_id' => 1234,
+];
+$newStore = PathaoCourier::store()->create($storeData);
 ```
 
 ### Refresh Access Token
@@ -179,55 +234,36 @@ $response = PathaoCourier::refreshToken($refreshToken);
 // Returns: ['access_token' => '...', 'refresh_token' => '...', 'expires_in' => 432000]
 ```
 
-### Create Bulk Orders
-
-```php
-$orders = [
-    [
-        'store_id' => 149043, // Use a test store ID from the list above
-        'recipient_name' => 'John Doe',
-        // ... other fields
-    ],
-    [
-        'store_id' => 149043, // Use a test store ID from the list above
-        'recipient_name' => 'Jane Doe',
-        // ... other fields
-    ],
-];
-
-$response = PathaoCourier::order()->createBulk($orders);
-```
-
-## API Methods
+## 📚 API Reference
 
 ### Authentication
 
 - `PathaoCourier::refreshToken(string $refreshToken)` - Refresh access token using refresh token
 
-### OrderApi
+### Order API
 
-- `create(array $orderData)` - Create a new order
-- `createBulk(array $orders)` - Create multiple orders
-- `getInfo(string $consignmentId)` - Get order short info
-- `getDetails(string $consignmentId)` - Get full order details
+- `PathaoCourier::order()->create(array $orderData)` - Create a new order
+- `PathaoCourier::order()->createBulk(array $orders)` - Create multiple orders at once
+- `PathaoCourier::order()->getInfo(string $consignmentId)` - Get order short info
+- `PathaoCourier::order()->getDetails(string $consignmentId)` - Get full order details
 
-### AreaApi
+### Area API
 
-- `getCities()` - Get list of all cities
-- `getZones(int $cityId)` - Get zones for a city
-- `getAreas(int $zoneId)` - Get areas for a zone
+- `PathaoCourier::area()->getCities()` - Get list of all cities
+- `PathaoCourier::area()->getZones(int $cityId)` - Get zones for a specific city
+- `PathaoCourier::area()->getAreas(int $zoneId)` - Get areas for a specific zone
 
-### StoreApi
+### Store API
 
-- `create(array $storeData)` - Create a new store
-- `list()` - Get list of stores
-- `getInfo(int $storeId)` - Get merchant store info (single store details)
+- `PathaoCourier::store()->create(array $storeData)` - Create a new store
+- `PathaoCourier::store()->list()` - Get list of all stores
+- `PathaoCourier::store()->getInfo(int $storeId)` - Get merchant store info
 
-### PriceApi
+### Price API
 
-- `calculate(array $priceData)` - Calculate delivery price
+- `PathaoCourier::price()->calculate(array $priceData)` - Calculate delivery price
 
-## Error Handling
+## ⚠️ Error Handling
 
 The package throws `Nayemuf\PathaoCourier\Exceptions\PathaoException` for all API errors:
 
@@ -237,47 +273,105 @@ use Nayemuf\PathaoCourier\Exceptions\PathaoException;
 try {
     $response = PathaoCourier::order()->create($orderData);
 } catch (PathaoException $e) {
-    // Handle error
+    // Get error message
     $message = $e->getMessage();
-    $errors = $e->getErrors(); // Array of validation errors if any
-    $code = $e->getCode(); // HTTP status code
+    
+    // Get field-level validation errors (if any)
+    $errors = $e->getErrors(); // Array of validation errors
+    
+    // Get HTTP status code
+    $code = $e->getCode();
+    
+    // Log or handle error
+    logger()->error('Pathao API Error', [
+        'message' => $message,
+        'errors' => $errors,
+        'code' => $code,
+    ]);
 }
 ```
 
-## Caching
+## 🔒 Caching
 
-Access tokens are automatically cached to reduce API calls. Tokens are cached for their full lifetime (minus 5 minutes for safety).
+Access tokens are automatically cached using Laravel's cache system to reduce API calls. Tokens are cached for their full lifetime (5 days) minus 5 minutes for safety. The cache key is configurable in `config/pathao.php`.
 
-## Rate Limiting
+## 🚦 Rate Limiting
 
-The package includes built-in rate limiting (60 requests per minute by default). This can be configured in the config file.
+The package includes built-in rate limiting to prevent API abuse. By default, it limits requests to 60 per minute. You can configure this in your `config/pathao.php`:
 
-## Validation
+```php
+'rate_limit' => [
+    'enabled' => true,
+    'requests_per_minute' => 60,
+],
+```
+
+## ✅ Validation Rules
 
 All input data is validated before sending to the API:
 
-- Recipient name: 3-100 characters
-- Recipient phone: Exactly 11 characters
-- Recipient address: 10-220 characters
-- Item weight: 0.5-10 kg
-- Delivery type: 48 (Normal) or 12 (On Demand)
-- Item type: 1 (Document) or 2 (Parcel)
+- **Recipient name**: 3-100 characters
+- **Recipient phone**: Exactly 11 characters (must start with 01)
+- **Recipient address**: 10-220 characters
+- **Item weight**: 0.5-10 kg
+- **Delivery type**: 48 (Normal) or 12 (On Demand)
+- **Item type**: 1 (Document) or 2 (Parcel)
+- **Item quantity**: Minimum 1
 
-## Testing
+## 🧪 Testing
+
+Run the test suite:
 
 ```bash
 composer test
 ```
 
-## Contributing
+Or run PHPUnit directly:
+
+```bash
+./vendor/bin/phpunit
+```
+
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-MIT License
+## 📝 Changelog
 
-## Support
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
-For issues and questions, please open an issue on GitHub.
+## 🔗 Links
 
+- [Packagist](https://packagist.org/packages/nayemuf/pathao-courier)
+- [GitHub Repository](https://github.com/nayemuf/pathao-courier)
+- [Pathao API Documentation](https://developer.pathao.com/)
+
+## 📄 License
+
+The MIT License (MIT). Please see [License File](LICENSE) for more information.
+
+## 👤 Author
+
+**Nayem Uddin**
+
+- Email: nayem110899@gmail.com
+- GitHub: [@nayemuf](https://github.com/nayemuf)
+
+## 🙏 Acknowledgments
+
+- Pathao for providing the Merchant API
+- Laravel community for the amazing framework
+
+## 💬 Support
+
+For issues, questions, or feature requests, please open an issue on [GitHub](https://github.com/nayemuf/pathao-courier/issues).
+
+---
+
+**Made with ❤️ for the Laravel community**
