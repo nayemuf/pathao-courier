@@ -362,6 +362,7 @@ The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
 - Email: nayem110899@gmail.com
 - GitHub: [@nayemuf](https://github.com/nayemuf)
+- LinkedIn: [@nayemuf](https://linkedin.com/in/nayemuf/)
 
 ## 🙏 Acknowledgments
 
@@ -373,5 +374,3 @@ The MIT License (MIT). Please see [License File](LICENSE) for more information.
 For issues, questions, or feature requests, please open an issue on [GitHub](https://github.com/nayemuf/pathao-courier/issues).
 
 ---
-
-**Made with ❤️ for the Laravel community**
