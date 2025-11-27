@@ -10,13 +10,15 @@ This document compares the custom **Nayemuf Pathao Courier** package with the th
 
 ### 1. **Token Caching Strategy**
 
-#### Codeboxr Package:
+#### Codeboxr Package
+
 - Uses **file storage** (`Storage::disk()->put()`) to save tokens
 - Requires disk I/O operations for every token check
 - Slower performance due to file system access
 - Token stored as JSON file: `pathao_bearer_token.json`
 
-#### Nayemuf Package:
+#### Nayemuf Package
+
 - Uses **Laravel Cache** (Redis/Memcached/Database)
 - **Much faster** - in-memory cache access
 - Automatic cache expiration handling
@@ -29,12 +31,14 @@ This document compares the custom **Nayemuf Pathao Courier** package with the th
 
 ### 2. **Rate Limiting**
 
-#### Codeboxr Package:
+#### Codeboxr Package 
+
 - ❌ **No rate limiting** built-in
 - Risk of hitting API limits and getting blocked
 - No protection against accidental API abuse
 
-#### Nayemuf Package:
+#### Nayemuf Package
+
 - ✅ **Built-in rate limiting** (60 requests/minute by default)
 - Configurable via config file
 - Per-endpoint rate limiting
@@ -47,12 +51,14 @@ This document compares the custom **Nayemuf Pathao Courier** package with the th
 
 ### 3. **Input Validation**
 
-#### Codeboxr Package:
+#### Codeboxr Package
+
 - Basic validation (if any)
 - Errors only discovered after API call
 - Less helpful error messages
 
-#### Nayemuf Package:
+#### Nayemuf Package
+
 - ✅ **Comprehensive pre-flight validation**
 - Validates before making API calls (saves API quota)
 - Detailed error messages:
@@ -70,12 +76,14 @@ This document compares the custom **Nayemuf Pathao Courier** package with the th
 
 ### 4. **Error Handling**
 
-#### Codeboxr Package:
+#### Codeboxr Package
+
 - Basic exception handling
 - Generic error messages
 - Limited error context
 
-#### Nayemuf Package:
+#### Nayemuf Package
+
 - ✅ **Custom Exception Class** (`PathaoException`)
 - Detailed error messages with context
 - Error array support for validation errors
@@ -89,12 +97,14 @@ This document compares the custom **Nayemuf Pathao Courier** package with the th
 
 ### 5. **Code Quality & Architecture**
 
-#### Codeboxr Package:
+#### Codeboxr Package
+
 - Basic structure
 - Less organized
 - Limited documentation
 
-#### Nayemuf Package:
+#### Nayemuf Package
+
 - ✅ **Clean Architecture**
 - Well-organized with proper separation of concerns
 - Comprehensive PHPDoc comments
@@ -110,11 +120,13 @@ This document compares the custom **Nayemuf Pathao Courier** package with the th
 
 ### 6. **API Coverage**
 
-#### Codeboxr Package:
+#### Codeboxr Package
+
 - Basic API methods
 - May have missing endpoints
 
-#### Nayemuf Package:
+#### Nayemuf Package
+
 - ✅ **Complete API Coverage:**
   - Order API: create, createBulk, getInfo, getDetails
   - Area API: getCities, getZones, getAreas
@@ -129,11 +141,13 @@ This document compares the custom **Nayemuf Pathao Courier** package with the th
 
 ### 7. **Configuration**
 
-#### Codeboxr Package:
+#### Codeboxr Package
+
 - Basic config
 - Limited customization
 
-#### Nayemuf Package:
+#### Nayemuf Package
+
 - ✅ **Comprehensive Configuration:**
   - Sandbox/Production toggle
   - Cache configuration
@@ -149,7 +163,8 @@ This document compares the custom **Nayemuf Pathao Courier** package with the th
 
 ### 8. **Documentation**
 
-#### Codeboxr Package:
+#### Codeboxr Package
+
 - Limited documentation
 - Basic examples
 
