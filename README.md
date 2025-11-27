@@ -336,11 +336,24 @@ Or run PHPUnit directly:
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+### Guidelines
+
+Before contributing, please ensure you follow these guidelines:
+
+1. **Follow PSR-4 Autoloading Standard** - All code must adhere to [PSR-4](https://www.php-fig.org/psr/psr-4/) autoloading standards
+2. **Refer to Pathao Official Documentation First** - Always check the [Pathao API Documentation](https://developer.pathao.com/) before implementing new features or changes
+3. **Maintain Code Quality** - Follow existing code style, add proper type hints, and include PHPDoc comments
+4. **Write Tests** - Include tests for new features or bug fixes
+5. **Update Documentation** - Update README, CHANGELOG, and inline documentation as needed
+
+### Contribution Process
+
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+3. Make your changes following the guidelines above
+4. Commit your changes (`git commit -m 'Add some amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request with a clear description of your changes
 
 ## 📝 Changelog
 
