@@ -382,8 +382,12 @@ The MIT License (MIT). Please see [License File](LICENSE) for more information.
 - Pathao for providing the Merchant API
 - Laravel community for the amazing framework
 
-## 💬 Support
+## 🐛 Reporting Issues
 
 For issues, questions, or feature requests, please open an issue on [GitHub](https://github.com/nayemuf/pathao-courier/issues).
+
+## 💝 Support
+
+If this package helps you, please consider giving it a ⭐ on [Packagist](https://packagist.org/packages/nayemuf/pathao-courier) or [GitHub](https://github.com/nayemuf/pathao-courier).
 
 ---
